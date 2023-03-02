@@ -27,3 +27,4 @@ using std::ifstream;
 using std::getline;
 using std::istringstream;
 using std::stoi;
+using std::exception;
