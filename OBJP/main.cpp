@@ -13,6 +13,7 @@ int main()
     vector<studentas> mas;
     vector<studentas> mas1;
     vector<studentas> mas2;
+    double visasLaikas = 0;
     int temp;
     if (klausimas0_1("\nAr skaityti duomenis is failo? 0 - Ne, 1 - Taip") == 0) {
         int studentuNr = 1;
@@ -24,10 +25,11 @@ int main()
         }
     }
     else {
-        skaitytiIsFailo(mas);
+        skaitytiIsFailo(mas, visasLaikas);
     }
     skirstitiStudentus(mas, mas1, mas2);
-    spausdinti(mas1, mas2);
+    spausdinti(mas1, mas2, visasLaikas);
+    cout << endl << mas1.size() + mas2.size() << " irasu visos programos vykdimo laikas: " << visasLaikas << " s" << endl;
     cout << endl << "Iveskite bet koki simboli norint isjungti programa" << endl;
     cin >> temp;
     cin.ignore();

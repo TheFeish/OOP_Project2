@@ -107,10 +107,10 @@ double mediana(vector<int> mas) {
     }
 }
 
-void spausdinti(vector<studentas> mas1, vector<studentas> mas2) {
+void spausdinti(vector<studentas> mas1, vector<studentas> mas2, double& visasLaikas) {
     try {
         if (mas1.size() + mas2.size() < 1) { throw "Nera pridetu studentu."; }
-
+        double funkLaikas = 0;
         auto pradzia = high_resolution_clock::now();
 
         sort(mas1.begin(), mas1.end());
@@ -118,6 +118,7 @@ void spausdinti(vector<studentas> mas1, vector<studentas> mas2) {
 
         auto pabaiga = high_resolution_clock::now();
         auto laikas = duration<double>(pabaiga - pradzia);
+        funkLaikas += laikas.count();
         cout << mas1.size() + mas2.size() << " irasu rusiavimo laikas: " << laikas.count() << " s" << endl;
 
         int temp = klausimas0_1("\nKaip skaiciuoti galutini studento pazymi? 0 - Naudojant vidurki, 1 - naudojant mediana");
@@ -149,7 +150,8 @@ void spausdinti(vector<studentas> mas1, vector<studentas> mas2) {
 
         pabaiga = high_resolution_clock::now();
         laikas = duration<double>(pabaiga - pradzia);
-        cout << mas1.size() << " vargsu irasymo i faila laikas: " << laikas.count() << " s" << endl;
+        funkLaikas += laikas.count();
+        cout << mas1.size() << " vargsu irasymo i faila laikas: " << fixed << laikas.count() << " s" << endl;
 
         pradzia = high_resolution_clock::now();
 
@@ -178,7 +180,9 @@ void spausdinti(vector<studentas> mas1, vector<studentas> mas2) {
 
         pabaiga = high_resolution_clock::now();
         laikas = duration<double>(pabaiga - pradzia);
-        cout << mas2.size() << " kietiaku irasymo i faila laikas: " << laikas.count() << " s" << endl;
+        funkLaikas += laikas.count();
+        visasLaikas += funkLaikas;
+        cout << mas2.size() << " kietiaku irasymo i faila laikas: " << fixed << laikas.count() << " s" << endl;
     }
     catch (const char* e) {
         cout << e << endl;
@@ -200,7 +204,7 @@ int klausimas0_1(string zinute) {
     return temp;
 }
 
-void skaitytiIsFailo(vector<studentas>& mas) {
+void skaitytiIsFailo(vector<studentas>& mas, double& visasLaikas) {
     string failas, temp;
     int ndNr = -3, failasParuostas = 0;
     ifstream ivestis;
@@ -266,7 +270,8 @@ void skaitytiIsFailo(vector<studentas>& mas) {
     ivestis.close();
     auto pabaiga = high_resolution_clock::now();
     auto laikas = duration<double>(pabaiga - pradzia);
-    cout << mas.size() << " irasu failo skaitymo laikas: " << laikas.count() << " s" << endl;
+    visasLaikas += laikas.count();
+    cout << mas.size() << " irasu failo skaitymo laikas: " << fixed << fixed << laikas.count() << " s" << endl;
 }
 
 void kurtiFaila(int studNr, int pazNr, string pavadinimas) {
@@ -294,7 +299,7 @@ void kurtiFaila(int studNr, int pazNr, string pavadinimas) {
     failas.close();
     auto pabaiga = high_resolution_clock::now();
     auto laikas = duration<double>(pabaiga - pradzia);
-    cout << studNr << " irasu failo kurimo laikas: " << laikas.count() << " s" << endl;
+    cout << studNr << " irasu failo kurimo laikas: " << fixed << laikas.count() << " s" << endl;
 }
 
 void skirstitiStudentus(vector<studentas>& studentai, vector<studentas>& vargsai, vector<studentas>& kietiakai) {
@@ -305,5 +310,5 @@ void skirstitiStudentus(vector<studentas>& studentai, vector<studentas>& vargsai
     studentai.clear();
     auto pabaiga = high_resolution_clock::now();
     auto laikas = duration<double>(pabaiga - pradzia);
-    cout << vargsai.size() + kietiakai.size() << " irasu skirtimo i dvi grupes laikas: " << laikas.count() << " s" << endl;
+    cout << vargsai.size() + kietiakai.size() << " irasu skirtimo i dvi grupes laikas: " << fixed << laikas.count() << " s" << endl;
 }
