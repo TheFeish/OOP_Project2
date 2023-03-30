@@ -9,6 +9,8 @@
 #include <sstream>
 #include <chrono>
 #include <filesystem>
+#include <list>
+#include <deque>
 
 using std::cout;
 using std::cin;
@@ -36,3 +38,5 @@ using std::chrono::high_resolution_clock;
 using std::chrono::duration;
 using std::partition;
 using std::filesystem::directory_iterator;
+using std::list;
+using std::deque;
