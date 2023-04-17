@@ -40,3 +40,8 @@ using std::partition;
 using std::filesystem::directory_iterator;
 using std::list;
 using std::deque;
+
+using std::copy;
+using std::remove_if;
+using std::remove;
+using std::back_inserter;
