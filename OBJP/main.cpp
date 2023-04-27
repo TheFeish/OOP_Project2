@@ -1,5 +1,6 @@
 #include "myLib.h"
 #include "funkcijos.h"
+#include "studentas.h"
 
 int main()
 {

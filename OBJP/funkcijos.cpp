@@ -1,5 +1,6 @@
 #include "myLib.h"
 #include "funkcijos.h"
+#include "studentas.h"
 
 const string vardai[20]{ "Markas" , "Benas" , "Herkus", "Jonas" , "Dominykas" , "Jokubas" , "Lukas" , "Matas" , "Adomas" , "Nojus" , "Sofija" , "Emilija" , "Amelija" , "Liepa" , "Lukne" , "Patricija" , "Kamile" , "Leja" , "Izabele" , "Elija" };
 const int vardaiN = 20;
@@ -13,36 +14,38 @@ void atsitiktinisStudentas(studentas& stud, int nr, bool generuotiVisusPaz) {
     uniform_int_distribution<int> distVardai(0, vardaiN - 1), distPavardes(0, pavardesN - 1), distPazymiai(0, 10);
 
     vector<int> mas;
+    string vardas, pavarde;
+    int egzaminas;
 
-    stud.vardas = vardai[distVardai(mt)];
-    stud.pavarde = pavardes[distPavardes(mt)];
-    if (stud.vardas.back() == 's') {
-        stud.pavarde += "as";
+    vardas = vardai[distVardai(mt)];
+    pavarde = pavardes[distPavardes(mt)];
+    if (vardas.back() == 's') {
+        pavarde += "as";
     }
     else {
-        stud.pavarde += "aite";
+        pavarde += "aite";
     }
 
     for (int i = 0; i < nr; i++) {
         mas.push_back(distPazymiai(mt));
     }
 
-    stud.egzaminas = distPazymiai(mt);
-
-    stud.vidurkis = vidurkis(mas) * 0.4 + stud.egzaminas * 0.6;
-    stud.mediana = mediana(mas) * 0.4 + stud.egzaminas * 0.6;
+    egzaminas = distPazymiai(mt);
 
     if (generuotiVisusPaz == true) {
-        stud.pazymiai = mas;
+        stud = studentas(vardas, pavarde, mediana(mas) * 0.4 + egzaminas * 0.6, vidurkis(mas) * 0.4 + egzaminas * 0.6, egzaminas, mas);
+    }
+    else {
+        stud = studentas(vardas, pavarde, mediana(mas) * 0.4 + egzaminas * 0.6, vidurkis(mas) * 0.4 + egzaminas * 0.6, egzaminas);
     }
 }
 
 //-------------------------------------------------------------------------------------------------------------
 
-void pridetiPazymius(studentas& stud) {
+void pridetiPazymius(studentas& stud, string vardas, string pavarde) {
     int pazymiuNr = 1;
     vector<int> mas;
-    int temp;
+    int temp, egzaminas;
     cout << "Iveskite studento namu darbu pazymius (Noredami uzbaigti iveskite, bet koki simboli): ";
     while (mas.size() < 1) {
         while (cin >> temp) {
@@ -59,14 +62,12 @@ void pridetiPazymius(studentas& stud) {
         cin.clear();
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
-    stud.vidurkis = vidurkis(mas);
-    stud.mediana = mediana(mas);
     temp = -1;
     cout << "Iveskite studento egzamino pazymi: ";
     while (temp < 0 || temp > 10) {
         cin >> temp;
         if (temp <= 10 && temp >= 0 && !cin.fail()) {
-            stud.egzaminas = temp;
+            egzaminas = temp;
         }
         else {
             cout << "Ivedete neteisinga reiksme" << endl;
@@ -75,16 +76,18 @@ void pridetiPazymius(studentas& stud) {
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
     }
+    stud = studentas(vardas, pavarde, mediana(mas) * 0.4 + egzaminas * 0.6, vidurkis(mas) * 0.4 + egzaminas * 0.6, egzaminas);
 }
 
 //-------------------------------------------------------------------------------------------------------------
 
 void pridetiStudenta(vector<studentas>& mas) {
     studentas stud;
+    string vardas, pavarde;
     if (klausimas0_1("\nAr ivesti atsitiktinai sugeneruota studenta? 0 - Ne, 1 - Taip") == 0) {
         cout << "Iveskite studento varda ir pavarde: ";
-        cin >> stud.vardas >> stud.pavarde;
-        pridetiPazymius(stud);
+        cin >> vardas >> pavarde;
+        pridetiPazymius(stud, vardas, pavarde);
     }
     else {
         atsitiktinisStudentas(stud, 10, false);
@@ -94,10 +97,11 @@ void pridetiStudenta(vector<studentas>& mas) {
 
 void pridetiStudenta(list<studentas>& mas) {
     studentas stud;
+    string vardas, pavarde;
     if (klausimas0_1("\nAr ivesti atsitiktinai sugeneruota studenta? 0 - Ne, 1 - Taip") == 0) {
         cout << "Iveskite studento varda ir pavarde: ";
-        cin >> stud.vardas >> stud.pavarde;
-        pridetiPazymius(stud);
+        cin >> vardas >> pavarde;
+        pridetiPazymius(stud, vardas, pavarde);
     }
     else {
         atsitiktinisStudentas(stud, 10, false);
@@ -107,10 +111,11 @@ void pridetiStudenta(list<studentas>& mas) {
 
 void pridetiStudenta(deque<studentas>& mas) {
     studentas stud;
+    string vardas, pavarde;
     if (klausimas0_1("\nAr ivesti atsitiktinai sugeneruota studenta? 0 - Ne, 1 - Taip") == 0) {
         cout << "Iveskite studento varda ir pavarde: ";
-        cin >> stud.vardas >> stud.pavarde;
-        pridetiPazymius(stud);
+        cin >> vardas >> pavarde;
+        pridetiPazymius(stud, vardas, pavarde);
     }
     else {
         atsitiktinisStudentas(stud, 10, false);
@@ -164,10 +169,10 @@ void spausdinti(vector<studentas> mas1, vector<studentas> mas2, int spBudas, dou
         for (auto stud : mas1) {
             ss.str(string());
             if (spBudas == 0) {
-                ss << endl << setw(28) << left << stud.vardas << setw(31) << left << stud.pavarde << setprecision(2) << fixed << stud.vidurkis;
+                stud.spausdinti(ss, true);
             }
             else {
-                ss << endl << setw(28) << left << stud.vardas << setw(31) << left << stud.pavarde << setprecision(2) << fixed << stud.mediana;
+                stud.spausdinti(ss, false);
             }
             failas << ss.str();
         }
@@ -194,10 +199,10 @@ void spausdinti(vector<studentas> mas1, vector<studentas> mas2, int spBudas, dou
         for (auto stud : mas2) {
             ss.str(string());
             if (spBudas == 0) {
-                ss << endl << setw(28) << left << stud.vardas << setw(31) << left << stud.pavarde << setprecision(2) << fixed << stud.vidurkis;
+                stud.spausdinti(ss, true);
             }
             else {
-                ss << endl << setw(28) << left << stud.vardas << setw(31) << left << stud.pavarde << setprecision(2) << fixed << stud.mediana;
+                stud.spausdinti(ss, false);
             }
             failas << ss.str();
         }
@@ -235,10 +240,10 @@ void spausdinti(list<studentas> mas1, list<studentas> mas2, int spBudas, double&
         for (auto stud : mas1) {
             ss.str(string());
             if (spBudas == 0) {
-                ss << endl << setw(28) << left << stud.vardas << setw(31) << left << stud.pavarde << setprecision(2) << fixed << stud.vidurkis;
+                stud.spausdinti(ss, true);
             }
             else {
-                ss << endl << setw(28) << left << stud.vardas << setw(31) << left << stud.pavarde << setprecision(2) << fixed << stud.mediana;
+                stud.spausdinti(ss, false);
             }
             failas << ss.str();
         }
@@ -265,10 +270,10 @@ void spausdinti(list<studentas> mas1, list<studentas> mas2, int spBudas, double&
         for (auto stud : mas2) {
             ss.str(string());
             if (spBudas == 0) {
-                ss << endl << setw(28) << left << stud.vardas << setw(31) << left << stud.pavarde << setprecision(2) << fixed << stud.vidurkis;
+                stud.spausdinti(ss, true);
             }
             else {
-                ss << endl << setw(28) << left << stud.vardas << setw(31) << left << stud.pavarde << setprecision(2) << fixed << stud.mediana;
+                stud.spausdinti(ss, false);
             }
             failas << ss.str();
         }
@@ -306,10 +311,10 @@ void spausdinti(deque<studentas> mas1, deque<studentas> mas2, int spBudas, doubl
         for (auto stud : mas1) {
             ss.str(string());
             if (spBudas == 0) {
-                ss << endl << setw(28) << left << stud.vardas << setw(31) << left << stud.pavarde << setprecision(2) << fixed << stud.vidurkis;
+                stud.spausdinti(ss, true);
             }
             else {
-                ss << endl << setw(28) << left << stud.vardas << setw(31) << left << stud.pavarde << setprecision(2) << fixed << stud.mediana;
+                stud.spausdinti(ss, false);
             }
             failas << ss.str();
         }
@@ -336,10 +341,10 @@ void spausdinti(deque<studentas> mas1, deque<studentas> mas2, int spBudas, doubl
         for (auto stud : mas2) {
             ss.str(string());
             if (spBudas == 0) {
-                ss << endl << setw(28) << left << stud.vardas << setw(31) << left << stud.pavarde << setprecision(2) << fixed << stud.vidurkis;
+                stud.spausdinti(ss, true);
             }
             else {
-                ss << endl << setw(28) << left << stud.vardas << setw(31) << left << stud.pavarde << setprecision(2) << fixed << stud.mediana;
+                stud.spausdinti(ss, false);
             }
             failas << ss.str();
         }
@@ -377,10 +382,9 @@ int klausimas0_1(string zinute) {
 //-------------------------------------------------------------------------------------------------------------
 
 void skaitytiIsFailo(vector<studentas>& mas, double& visasLaikas) {
-    string failas, temp;
-    int ndNr = -3, failasParuostas = 0;
+    string failas, temp, vardas, pavarde;
+    int ndNr = -3, failasParuostas = 0, egzaminas;
     ifstream ivestis;
-    studentas stud;
     vector<int> pazymiai;
     while (failasParuostas == 0) {
         try {
@@ -424,18 +428,15 @@ void skaitytiIsFailo(vector<studentas>& mas, double& visasLaikas) {
             ss.clear();
             ss.str(temp);
 
-            ss >> stud.vardas >> stud.pavarde;
+            ss >> vardas >> pavarde;
             for (int i = 0; i < ndNr; i++) {
                 ss >> temp;
                 pazymiai.push_back(stoi(temp));
             }
             ss >> temp;
-            stud.egzaminas = stoi(temp);
+            egzaminas = stoi(temp);
 
-            stud.vidurkis = vidurkis(pazymiai) * 0.4 + stud.egzaminas * 0.6;
-            stud.mediana = mediana(pazymiai) * 0.4 + stud.egzaminas * 0.6;
-
-            mas.push_back(stud);
+            mas.push_back(studentas(vardas, pavarde, mediana(pazymiai) * 0.4 + egzaminas * 0.6, vidurkis(pazymiai) * 0.4 + egzaminas * 0.6, egzaminas));
         }
     }
     ivestis.close();
@@ -446,10 +447,9 @@ void skaitytiIsFailo(vector<studentas>& mas, double& visasLaikas) {
 }
 
 void skaitytiIsFailo(list<studentas>& mas, double& visasLaikas) {
-    string failas, temp;
-    int ndNr = -3, failasParuostas = 0;
+    string failas, temp, vardas, pavarde;
+    int ndNr = -3, failasParuostas = 0, egzaminas;
     ifstream ivestis;
-    studentas stud;
     vector<int> pazymiai;
     while (failasParuostas == 0) {
         try {
@@ -493,18 +493,15 @@ void skaitytiIsFailo(list<studentas>& mas, double& visasLaikas) {
             ss.clear();
             ss.str(temp);
 
-            ss >> stud.vardas >> stud.pavarde;
+            ss >> vardas >> pavarde;
             for (int i = 0; i < ndNr; i++) {
                 ss >> temp;
                 pazymiai.push_back(stoi(temp));
             }
             ss >> temp;
-            stud.egzaminas = stoi(temp);
+            egzaminas = stoi(temp);
 
-            stud.vidurkis = vidurkis(pazymiai) * 0.4 + stud.egzaminas * 0.6;
-            stud.mediana = mediana(pazymiai) * 0.4 + stud.egzaminas * 0.6;
-
-            mas.push_back(stud);
+            mas.push_back(studentas(vardas, pavarde, mediana(pazymiai) * 0.4 + egzaminas * 0.6, vidurkis(pazymiai) * 0.4 + egzaminas * 0.6, egzaminas));
         }
     }
     ivestis.close();
@@ -515,10 +512,9 @@ void skaitytiIsFailo(list<studentas>& mas, double& visasLaikas) {
 }
 
 void skaitytiIsFailo(deque<studentas>& mas, double& visasLaikas) {
-    string failas, temp;
-    int ndNr = -3, failasParuostas = 0;
+    string failas, temp, vardas, pavarde;
+    int ndNr = -3, failasParuostas = 0, egzaminas;
     ifstream ivestis;
-    studentas stud;
     vector<int> pazymiai;
     while (failasParuostas == 0) {
         try {
@@ -562,18 +558,15 @@ void skaitytiIsFailo(deque<studentas>& mas, double& visasLaikas) {
             ss.clear();
             ss.str(temp);
 
-            ss >> stud.vardas >> stud.pavarde;
+            ss >> vardas >> pavarde;
             for (int i = 0; i < ndNr; i++) {
                 ss >> temp;
                 pazymiai.push_back(stoi(temp));
             }
             ss >> temp;
-            stud.egzaminas = stoi(temp);
+            egzaminas = stoi(temp);
 
-            stud.vidurkis = vidurkis(pazymiai) * 0.4 + stud.egzaminas * 0.6;
-            stud.mediana = mediana(pazymiai) * 0.4 + stud.egzaminas * 0.6;
-
-            mas.push_back(stud);
+            mas.push_back(studentas(vardas, pavarde, mediana(pazymiai) * 0.4 + egzaminas * 0.6, vidurkis(pazymiai) * 0.4 + egzaminas * 0.6, egzaminas));
         }
     }
     ivestis.close();
@@ -599,12 +592,7 @@ void kurtiFaila(int studNr, int pazNr, string pavadinimas) {
     failas << ss.str();
     for (int i = 0; i < studNr; i++) {
         atsitiktinisStudentas(stud, pazNr, true);
-        ss.str(string());
-        ss << endl << left << setw(28) << stud.vardas << left << setw(31) << stud.pavarde;
-        for (int x = 0; x < pazNr; x++) {
-            ss << left << setw(10) << stud.pazymiai[x];
-        }
-        ss << setw(10) << left << stud.egzaminas;
+        stud.spausdintiDuomenuFailui(ss);
         failas << ss.str();
     }
     failas.close();
@@ -619,13 +607,13 @@ void skirstitiStudentus(vector<studentas>& studentai, vector<studentas>& vargsai
     double funkLaikas = 0;
     auto pradzia = high_resolution_clock::now();
     if (rusBudas == 0) {
-        auto iteratorius = partition(studentai.begin(), studentai.end(), [](studentas stud) {return stud.vidurkis < 5; });
+        auto iteratorius = partition(studentai.begin(), studentai.end(), [](studentas stud) {return stud.grazintiVidurki() < 5; });
         vargsai = vector<studentas>(studentai.begin(), iteratorius);
         kietiakai = vector<studentas>(iteratorius, studentai.end());
         studentai.clear();
     }
     else {
-        auto iteratorius = partition(studentai.begin(), studentai.end(), [](studentas stud) {return stud.mediana < 5; });
+        auto iteratorius = partition(studentai.begin(), studentai.end(), [](studentas stud) {return stud.grazintiMediana() < 5; });
         vargsai = vector<studentas>(studentai.begin(), iteratorius);
         kietiakai = vector<studentas>(iteratorius, studentai.end());
         studentai.clear();
@@ -651,13 +639,13 @@ void skirstitiStudentus(list<studentas>& studentai, list<studentas>& vargsai, li
     double funkLaikas = 0;
     auto pradzia = high_resolution_clock::now();
     if (rusBudas == 0) {
-        auto iteratorius = partition(studentai.begin(), studentai.end(), [](studentas stud) {return stud.vidurkis < 5; });
+        auto iteratorius = partition(studentai.begin(), studentai.end(), [](studentas stud) {return stud.grazintiVidurki() < 5; });
         vargsai = list<studentas>(studentai.begin(), iteratorius);
         kietiakai = list<studentas>(iteratorius, studentai.end());
         studentai.clear();
     }
     else {
-        auto iteratorius = partition(studentai.begin(), studentai.end(), [](studentas stud) {return stud.mediana < 5; });
+        auto iteratorius = partition(studentai.begin(), studentai.end(), [](studentas stud) {return stud.grazintiMediana() < 5; });
         vargsai = list<studentas>(studentai.begin(), iteratorius);
         kietiakai = list<studentas>(iteratorius, studentai.end());
         studentai.clear();
@@ -683,13 +671,13 @@ void skirstitiStudentus(deque<studentas>& studentai, deque<studentas>& vargsai, 
     double funkLaikas = 0;
     auto pradzia = high_resolution_clock::now();
     if (rusBudas == 0) {
-        auto iteratorius = partition(studentai.begin(), studentai.end(), [](studentas stud) {return stud.vidurkis < 5; });
+        auto iteratorius = partition(studentai.begin(), studentai.end(), [](studentas stud) {return stud.grazintiVidurki() < 5; });
         vargsai = deque<studentas>(studentai.begin(), iteratorius);
         kietiakai = deque<studentas>(iteratorius, studentai.end());
         studentai.clear();
     }
     else {
-        auto iteratorius = partition(studentai.begin(), studentai.end(), [](studentas stud) {return stud.mediana < 5; });
+        auto iteratorius = partition(studentai.begin(), studentai.end(), [](studentas stud) {return stud.grazintiMediana() < 5; });
         vargsai = deque<studentas>(studentai.begin(), iteratorius);
         kietiakai = deque<studentas>(iteratorius, studentai.end());
         studentai.clear();
@@ -716,12 +704,12 @@ void skirstitiStudentus2(vector<studentas>& kietiakai, vector<studentas>& vargsa
     double funkLaikas = 0;
     auto pradzia = high_resolution_clock::now();
     if (rusBudas == 0) {
-        auto iteratorius = partition(kietiakai.begin(), kietiakai.end(), [](studentas stud) {return stud.vidurkis < 5; });
+        auto iteratorius = partition(kietiakai.begin(), kietiakai.end(), [](studentas stud) {return stud.grazintiVidurki() < 5; });
         vargsai = vector<studentas>(kietiakai.begin(), iteratorius);
         kietiakai.erase(kietiakai.begin(), iteratorius);
     }
     else {
-        auto iteratorius = partition(kietiakai.begin(), kietiakai.end(), [](studentas stud) {return stud.mediana < 5; });
+        auto iteratorius = partition(kietiakai.begin(), kietiakai.end(), [](studentas stud) {return stud.grazintiMediana() < 5; });
         vargsai = vector<studentas>(kietiakai.begin(), iteratorius);
         kietiakai.erase(kietiakai.begin(), iteratorius);
     }
@@ -747,12 +735,12 @@ void skirstitiStudentus2(list<studentas>& kietiakai, list<studentas>& vargsai, i
     double funkLaikas = 0;
     auto pradzia = high_resolution_clock::now();
     if (rusBudas == 0) {
-        auto iteratorius = partition(kietiakai.begin(), kietiakai.end(), [](studentas stud) {return stud.vidurkis < 5; });
+        auto iteratorius = partition(kietiakai.begin(), kietiakai.end(), [](studentas stud) {return stud.grazintiVidurki() < 5; });
         vargsai = list<studentas>(kietiakai.begin(), iteratorius);
         kietiakai.erase(kietiakai.begin(), iteratorius);
     }
     else {
-        auto iteratorius = partition(kietiakai.begin(), kietiakai.end(), [](studentas stud) {return stud.mediana < 5; });
+        auto iteratorius = partition(kietiakai.begin(), kietiakai.end(), [](studentas stud) {return stud.grazintiMediana() < 5; });
         vargsai = list<studentas>(kietiakai.begin(), iteratorius);
         kietiakai.erase(kietiakai.begin(), iteratorius);
     }
@@ -778,12 +766,12 @@ void skirstitiStudentus2(deque<studentas>& kietiakai, deque<studentas>& vargsai,
     double funkLaikas = 0;
     auto pradzia = high_resolution_clock::now();
     if (rusBudas == 0) {
-        auto iteratorius = partition(kietiakai.begin(), kietiakai.end(), [](studentas stud) {return stud.vidurkis < 5; });
+        auto iteratorius = partition(kietiakai.begin(), kietiakai.end(), [](studentas stud) {return stud.grazintiVidurki() < 5; });
         vargsai = deque<studentas>(kietiakai.begin(), iteratorius);
         kietiakai.erase(kietiakai.begin(), iteratorius);
     }
     else {
-        auto iteratorius = partition(kietiakai.begin(), kietiakai.end(), [](studentas stud) {return stud.mediana < 5; });
+        auto iteratorius = partition(kietiakai.begin(), kietiakai.end(), [](studentas stud) {return stud.grazintiMediana() < 5; });
         vargsai = deque<studentas>(kietiakai.begin(), iteratorius);
         kietiakai.erase(kietiakai.begin(), iteratorius);
     }

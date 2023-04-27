@@ -1,21 +1,7 @@
 #pragma once
-struct studentas {
-    string vardas, pavarde;
-    int egzaminas;
-    vector<int> pazymiai;
-    double mediana, vidurkis;
-
-    bool operator<(studentas& val) {
-        if (vardas != val.vardas) {
-            return vardas < val.vardas;
-        }
-        else {
-            return pavarde < val.pavarde;
-        }
-    }
-};
+#include "studentas.h"
 void atsitiktinisStudentas(studentas& stud, int nr, bool generuotiVisusPaz);
-void pridetiPazymius(studentas& stud);
+void pridetiPazymius(studentas& stud, string vardas, string pavarde);
 //-------------------------------------------------------------------------------------------------------------
 void pridetiStudenta(vector<studentas>& mas);
 void pridetiStudenta(list<studentas>& mas);
