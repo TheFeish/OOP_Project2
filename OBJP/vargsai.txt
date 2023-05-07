@@ -1,5 +1,0 @@
-Vardas                      Pavarde                        Galutinis (Vid)
---------------------------------------------------------------------------
-Liepa                       Jankauskaite                   2.96
-Liepa                       Sakalauskaite                  3.48
-Markas                      Savickas                       4.20
