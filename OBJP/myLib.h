@@ -42,3 +42,4 @@ using std::filesystem::directory_iterator;
 using std::list;
 using std::deque;
 using std::ostream;
+using std::move;
