@@ -1,6 +1,0 @@
-Vardas                      Pavarde                        Galutinis (Vid)
---------------------------------------------------------------------------
-Dominykas                   Bagdonas                       7.48
-Kamile                      Jankauskaite                   5.48
-Leja                        Kaminskaite                    6.00
-Matas                       Vitkauskas                     8.24
