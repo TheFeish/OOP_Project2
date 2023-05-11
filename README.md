@@ -1,5 +1,5 @@
 # Object oriented programming project
-Project subversion v1.2
-1. Added copy constructor and assignment to studentas class.
-2. Added move constructor and assignment to studentas class.
-3. Added << operator override to studentas class.
+Project subversion v1.5
+1. Added abstrat class **zmogus** which holds **vardas** and **pavarde** variables and their getters and setters.
+2. **studentas** class is now derived from **zmogus** class.
+3. Added missing getters and setters to **studentas** class.
