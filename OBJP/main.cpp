@@ -1,19 +1,10 @@
 #include "myLib.h"
 #include "funkcijos.h"
 #include "studentas.h"
+#include "zmogus.h"
 
 int main()
 {
-    /*
-    studentas s1("vardenis", "pavardenis", 2, 3, 4, vector<int>{1, 2, 3});
-    studentas s2("vardenis", "pavardenis", 2, 3, 4, vector<int>{4, 5, 6});
-    studentas s3("vardenis", "pavardenis", 2, 3, 4, vector<int>{7, 8, 9});
-    studentas s4("vardenis", "pavardenis", 2, 3, 4, vector<int>{10, 11, 12});
-    s1 = move(s3);
-    s2 = s4;
-    cout << s1 << endl << s2 << endl << s3 << endl << s4 << endl;
-    */
-
     if (klausimas0_1("Ar kurti duomenu failus? 0 - Ne, 1 - Taip") == 1) {
         kurtiFaila(1000, 10, "kursiokai1000.txt");
         kurtiFaila(10000, 10, "kursiokai10000.txt");
@@ -142,6 +133,5 @@ int main()
     cout << endl << "Iveskite bet koki simboli norint isjungti programa" << endl;
     cin >> temp;
     cin.ignore();
-
     return 0;
 }

@@ -1,14 +1,15 @@
 #pragma once
 #include "myLib.h"
-class studentas
+#include "zmogus.h"
+
+class studentas: public zmogus
 {
 private:
-	string vardas, pavarde;
 	double mediana, vidurkis;
 	int egzaminas;
 	vector<int> pazymiai;
 public:
-	studentas() : vardas(""), pavarde(""), mediana(0), vidurkis(0), egzaminas(0), pazymiai() {}
+	studentas() : zmogus{}, mediana(0), vidurkis(0), egzaminas(0), pazymiai() {}
 	studentas(string var, string pav, double med, double vid, int egz);
 	studentas(string var, string pav, double med, double vid, int egz, vector<int> paz);
 	studentas(const studentas& val);
@@ -25,13 +26,15 @@ public:
 
 	void spausdinti(ostringstream& out, bool arVidurkis);
 
-	void spausdintiDuomenuFailui(ostringstream& out);
+	void spausdinti(ostringstream& out);
 
 	vector<int> grazintiPazymius();
-
 	double grazintiMediana();
-
 	double grazintiVidurki();
+	int grazintiEgzamina();
 
-	void keistiPazymius(vector<int> paz);
+	void nustatytiPazymius(vector<int> paz);
+	void nustatytiMediana(double med);
+	void nustatytiVidurki(double vid);
+	void nustatytiEgzamina(int egz);
 };

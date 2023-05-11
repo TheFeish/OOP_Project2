@@ -592,7 +592,7 @@ void kurtiFaila(int studNr, int pazNr, string pavadinimas) {
     failas << ss.str();
     for (int i = 0; i < studNr; i++) {
         atsitiktinisStudentas(stud, pazNr, true);
-        stud.spausdintiDuomenuFailui(ss);
+        stud.spausdinti(ss);
         failas << ss.str();
     }
     failas.close();

@@ -1,10 +1,10 @@
 #include "studentas.h"
 #include "myLib.h"
 
-studentas::studentas(string var, string pav, double med, double vid, int egz) : vardas(var), pavarde(pav), mediana(med), vidurkis(vid), egzaminas(egz), pazymiai() {}
-studentas::studentas(string var, string pav, double med, double vid, int egz, vector<int> paz) : vardas(var), pavarde(pav), mediana(med), vidurkis(vid), egzaminas(egz), pazymiai(paz) {}
-studentas::studentas(const studentas& val) : vardas(val.vardas), pavarde(val.pavarde), mediana(val.mediana), vidurkis(val.vidurkis), egzaminas(val.egzaminas), pazymiai(val.pazymiai) {}
-studentas::studentas(studentas&& val) : vardas(val.vardas), pavarde(val.pavarde), mediana(val.mediana), vidurkis(val.vidurkis), egzaminas(val.egzaminas), pazymiai(move(val.pazymiai)) {
+studentas::studentas(string var, string pav, double med, double vid, int egz) : zmogus{var, pav}, mediana(med), vidurkis(vid), egzaminas(egz), pazymiai() {}
+studentas::studentas(string var, string pav, double med, double vid, int egz, vector<int> paz) : zmogus{ var, pav }, mediana(med), vidurkis(vid), egzaminas(egz), pazymiai(paz) {}
+studentas::studentas(const studentas& val) : zmogus{ val.vardas, val.pavarde }, mediana(val.mediana), vidurkis(val.vidurkis), egzaminas(val.egzaminas), pazymiai(val.pazymiai) {}
+studentas::studentas(studentas&& val) : zmogus{ val.vardas, val.pavarde }, mediana(val.mediana), vidurkis(val.vidurkis), egzaminas(val.egzaminas), pazymiai(move(val.pazymiai)) {
 	val.vardas = "";
 	val.pavarde = "";
 	val.mediana = 0;
@@ -65,7 +65,7 @@ void studentas::spausdinti(ostringstream& out, bool arVidurkis) {
 	}
 }
 
-void studentas::spausdintiDuomenuFailui(ostringstream& out) {
+void studentas::spausdinti(ostringstream& out) {
 	out.str(string());
 	out << endl << left << setw(28) << vardas << left << setw(31) << pavarde;
 	for (auto paz : pazymiai) {
@@ -75,9 +75,11 @@ void studentas::spausdintiDuomenuFailui(ostringstream& out) {
 }
 
 vector<int> studentas::grazintiPazymius() { return pazymiai; }
-
 double studentas::grazintiMediana() { return mediana; }
-
 double studentas::grazintiVidurki() { return vidurkis; }
+int studentas::grazintiEgzamina() { return egzaminas; }
 
-void studentas::keistiPazymius(vector<int> paz) { pazymiai = paz; }
+void studentas::nustatytiPazymius(vector<int> paz) { pazymiai = paz; }
+void studentas::nustatytiMediana(double med) { mediana = med; }
+void studentas::nustatytiVidurki(double vid) { vidurkis = vid; }
+void studentas::nustatytiEgzamina(int egz) { egzaminas = egz; }
