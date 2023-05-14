@@ -7,6 +7,7 @@ Project version v2.0
 1. Compile program using make or by running Setup.msi.
 2. Launch program by opening main.exe if using make or OBJP.exe if using Setup.msi.
 3. Follow instructions in console.
+4. Documentation can be read by opening index.html in Documentation folder.
 
 # Features
 * Ability to grade students based on their marks, split them based on their final grade and sort by their first and last names.
