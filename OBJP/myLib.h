@@ -1,3 +1,7 @@
+/// <summary>
+/// @file myLib.h
+/// Libraries and namespaces to be included.
+/// </summary>
 #pragma once
 #include <ostream>
 #include <iostream>

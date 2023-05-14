@@ -1,3 +1,7 @@
+/// <summary>
+/// @file studentas.cpp
+/// Implementation of studentas class functions.
+/// </summary>
 #include "studentas.h"
 #include "myLib.h"
 

@@ -1,3 +1,7 @@
+/// <summary>
+/// @file funkcijos.cpp
+/// Implementation of other functions.
+/// </summary>
 #include "myLib.h"
 #include "funkcijos.h"
 #include "studentas.h"

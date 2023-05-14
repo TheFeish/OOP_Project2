@@ -1,3 +1,7 @@
+/// <summary>
+/// @file zmogus.cpp
+/// Implementation of zmogus class functions.
+/// </summary>
 #include "zmogus.h"
 #include "myLib.h"
 

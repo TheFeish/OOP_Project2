@@ -1,8 +1,15 @@
+/// <summary>
+/// @file main.cpp
+/// Main function.
+/// </summary>
 #include "myLib.h"
 #include "funkcijos.h"
 #include "studentas.h"
 #include "zmogus.h"
 
+/// <summary>
+/// Main function.
+/// </summary>
 int main()
 {
     if (klausimas0_1("Ar kurti duomenu failus? 0 - Ne, 1 - Taip") == 1) {
